@@ -1,9 +1,9 @@
 class Choice:
-    def __init__(
+    def __init__(self,
                  text: str,
-                 target: int,
+                 target: int | None,
                  requiresInv: dict[str, int] = None,
-                 requiresFlag: list[str] = None,
+                 requiresFlag: list[str, bool] = None,
                  effects: dict[str, int] = None):
         self.text = text
         self.target = target
@@ -11,7 +11,7 @@ class Choice:
         self.requiresFlag = requiresFlag or {}
         self.effects = effects or {}
 
-    def is_available(self, game) -> bool:
+    def is_available(self, game:) -> bool: #TODO tipar game
         for r in self.requiresInv:
             for item in requiresInv:
                 if game.inventory.items[item[0]] < item[1]:
@@ -20,3 +20,5 @@ class Choice:
                 if not(game.flags[f]):
                     return False
             return True
+    
+    
