@@ -11,6 +11,7 @@ class AudioManager:
 
     def __init__(self):
         self._sounds: Dict[str, object] = {}
+        self._ambient = None
 
     def load(self, filename: str):
         p = Path(filename)
@@ -19,17 +20,50 @@ class AudioManager:
         sound = oalOpen(str(p))
         self._sounds[str(p)] = sound
         return sound
-
-    def play(self, filename: str):
-        """
-        Play the given file. Will load it on demand.
-        Non-blocking: play() returns immediately while sound plays.
-        """
+    def _get_sound(self, filename: str):
+        """Get a already loaded sound or load it if not available."""
         key = str(Path(filename))
         snd = self._sounds.get(key)
         if snd is None:
             snd = self.load(filename)
+        return snd
+    def play_effect(self, filename: str, position: tuple[float, float, float] = (0, 0, 0)):
+        """Play a one-shot sound effect at an optional 3D position."""
+        snd = self._get_sound(filename)
+        snd.set_looping(False)
+        snd.set_position(position)
         snd.play()
+
+    def play_ambient(self, filename: str, position: tuple[float, float, float] = (0, 0, 0)): 
+        """
+        Play a looping ambient sound at an optional 3D position.
+        Stops the previous ambient track if one is active.
+        (0,0,0) -> center
+        (1,0,0) -> right
+        (-1,0,0) -> left
+        (0,0,1) -> front
+        (0,0,-1) -> behind
+        (0,1,0) -> above
+        (0,-1,0) -> below
+        (2,0,0) -> far right
+        (-2,0,0) -> far left
+        (0,0,5) -> far front
+        (0,0,-5) -> far behind        
+        """
+        if self._ambient is not None:
+            self._ambient.stop()
+
+        snd = self._get_sound(filename)
+        snd.set_looping(True)
+        snd.set_position(position)
+        snd.play()
+        self._ambient = snd
+
+    def stop_ambient(self):
+        """Stop the current ambient sound if active."""
+        if self._ambient is not None:
+            self._ambient.stop()
+            self._ambient = None
 
     def stop_all(self):
         for snd in self._sounds.values():
