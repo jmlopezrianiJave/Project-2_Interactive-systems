@@ -7,20 +7,23 @@ class Choice:
                  requiresInv: dict[str, int] = None,
                  requiresFlag: dict[str, bool] = None,
                  effectsInv: dict[str, int] = None,
-                 effectsFlag: dict[str, bool] = None):
+                 effectsFlag: dict[str, bool] = None,
+                 sound: str | None = None):
         self.text = text
         self.target = target
         self.requiresInv = requiresInv or {}
         self.requiresFlag = requiresFlag or {}
         self.effectsInv = effectsInv or {}
         self.effectsFlag = effectsFlag or {}
+        self.sound = sound
 
     def is_available(self,inv:Inventory, flags:dict[str,bool]) -> bool:
         for name, qty in self.requiresInv.items():
             if inv.equipment.get(name,0) < qty:
                 return False
         for f, state in self.requiresFlag.items():
-            if flags[f] != state:
+            cur = flags.get(f, False)
+            if cur != state:
                 return False
         return True
 
