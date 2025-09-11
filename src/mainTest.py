@@ -1,4 +1,3 @@
-# main.py  (updated with clear-screen, narration, dynamic descriptions)
 import os
 import sys
 from audioManager import AudioManager
@@ -6,25 +5,21 @@ from inventory import Inventory
 from choice import Choice
 from node import Node
 
-# helper: clear the terminal screen cross-platform
 def clear_screen():
     if sys.platform.startswith("win"):
         os.system("cls")
     else:
         os.system("clear")
 
-
 def build_story():
-
     nodes = {}
 
-    # 1 - Foyer
     nodes[1] = Node(
         id=1,
         title="Foyer",
         description=(
-            "You stand in the dim foyer of an old house. The air is cold. "
-            "A coat rack hangs by the door, an umbrella stand leans in the corner. "
+            "You stand in the dim foyer of an old house. The air is cold.\n"
+            "A coat rack hangs by the door, an umbrella stand leans in the corner.\n"
             "From somewhere deeper in the house you can hear a low humming."
         ),
         choices=[
@@ -57,13 +52,12 @@ def build_story():
         ],
     )
 
-    # 2 - Living Room
     nodes[2] = Node(
         id=2,
         title="Living room",
         description=(
             "A sagging sofa faces a shuttered window. Bookshelves line one wall — "
-            "one book looks worn, as if it were read often."
+            "one book looks worn, as if it were read often. The wood creaks around you."
         ),
         choices=[
             Choice(
@@ -80,12 +74,11 @@ def build_story():
         ],
     )
 
-    # 3 - Kitchen
     nodes[3] = Node(
         id=3,
         title="Kitchen",
         description=(
-            "The kitchen is cold and lately used. A small knife lies on the counter. "
+            "The kitchen is torn apart, as if ravaged by someone, or something. There is a small knife on the counter.\n "
             "An old metal cabinet on the far wall is locked with a padlock."
         ),
         choices=[
@@ -97,7 +90,6 @@ def build_story():
                 effectsFlag={"picked_knife": True},
                 sound="sounds/knife_pickup.wav",
             ),
-            # opening cabinet requires the rusty key from foyer; one-time
             Choice(
                 "Try to open the locked cabinet (use rusty key)",
                 target=3,
@@ -112,7 +104,6 @@ def build_story():
         ],
     )
 
-    # 4 - Stair landing (access to attic and basement)
     nodes[4] = Node(
         id=4,
         title="Stair landing",
@@ -127,7 +118,6 @@ def build_story():
         ],
     )
 
-    # 5 - Attic
     nodes[5] = Node(
         id=5,
         title="Attic",
@@ -136,7 +126,6 @@ def build_story():
             "its lid sealed with brittle tape."
         ),
         choices=[
-            # require knife to cut tape (knife present if picked up in kitchen)
             Choice(
                 "Cut open the trunk with your knife",
                 target=5,
@@ -147,7 +136,7 @@ def build_story():
                 sound="sounds/tape_cut.wav",
             ),
             Choice(
-                "Force the trunk open with your hands (risky)",
+                "Force the trunk open with your hands",
                 target=5,
                 requiresFlag={"opened_trunk": False},
                 effectsInv={"ritual_notes": 1},
@@ -158,16 +147,15 @@ def build_story():
         ],
     )
 
-    # 6 - Basement (approach toward the possessed person's room)
     nodes[6] = Node(
         id=6,
         title="Basement corridor",
         description=(
-            "Damp concrete and a single bare bulb. The humming is louder here. "
-            "A heavy door at the end stands slightly ajar and cold air leaks out."
+            "Damp concrete and a single bare bulb that lights a path of blood droplets on the floor. The blood is still fresh. The humming is louder here. "
+            "A heavy door at the end stands slightly open, a foul smell leaking from it."
         ),
         choices=[
-            Choice("Approach the heavy door (the source of the sound)", target=7),
+            Choice("Approach the heavy door", target=7),
             Choice(
                 "Search the storage shelves",
                 target=6,
@@ -180,274 +168,171 @@ def build_story():
         ],
     )
 
-    # 7 - Threshold (right before the possessed room)
     nodes[7] = Node(
         id=7,
         title="Threshold",
         description=(
             "The door opens into a small, sparsely furnished room. Chains hang on one wall, "
             "and on a low table are strange symbols that look like a rushed ritual. "
-            "The humming resolves into a voice—something inside is awake."
+            "You see a figure facing the back wall, gently rocking back and forth while it mumbles to itself."
         ),
         choices=[
-            # Different confrontation options become available depending on inventory:
             Choice(
                 "Sprinkle holy water and attempt an exorcism",
                 target=8,
                 requiresInv={"holy_water": 1},
-                effectsInv={"holy_water": -1, "used_exorcism": 1},
+                effectsInv={"holy_water": -1},
+                effectsFlag={"used_exorcism": True},
                 sound="sounds/holy_splash.wav",
             ),
             Choice(
                 "Use the ritual notes you found to try to bind the thing",
                 target=8,
                 requiresInv={"ritual_notes": 1},
-                effectsInv={"ritual_notes": -1, "used_ritual": 1},
+                effectsInv={"ritual_notes": -1},
+                effectsFlag={"used_ritual": True},
                 sound="sounds/chant.wav",
             ),
             Choice(
                 "Rush in with the knife and try to fight",
                 target=8,
                 requiresInv={"knife": 1},
-                effectsInv={"used_violence": 1},
+                effectsFlag={"used_violence": True},
                 sound="sounds/knife_swipe.wav",
             ),
             Choice(
-                "Burst in unprepared (no items)",
+                "Burst in unprepared",
                 target=8,
-                effectsInv={"used_none": 1},
+                effectsFlag={"used_none": True},
                 sound="sounds/door_bang.wav",
             ),
             Choice("Step back quietly and rethink your approach", target=6),
         ],
     )
 
-    # 8 - Confrontation / Ending node
     nodes[8] = Node(
         id=8,
         title="Confrontation",
         description=(
-            "You enter the small room. The air is thick and the possessor locks eyes with you. "
-            "How this ends depends on what you've prepared."
+            "The thing locks eyes with you. It seems to have been a person at some point in the past."
+            "You make your choice and face the consequences."
         ),
-        choices=[Choice("Resolve the encounter", target=None)],
+        choices=[
+            Choice(
+                "Proceed with encounter", 
+                target=None,
+                sound="sounds/scream.wav")
+        ],
     )
 
     return nodes
 
-
-# small narration templates keyed by effect keys or choice text snippets
 NARRATION_MAP = {
-    "rusty_key": "You pry the rusty key from the wood. It tastes of iron in your palm.",
-    "letter": "You slide the brittle envelope free. The paper crackles.",
-    "knife": "You take the small kitchen knife. The metal feels oddly warm.",
-    "holy_water": "A vial of cloudy liquid hums faintly in your hands.",
-    "ritual_notes": "You unfold the ritual notes; the handwriting shakes the page.",
-    "opened_cabinet": "The padlock snaps loose with a shriek, revealing a small vial.",
-    "opened_trunk": "The trunk lid gives way and inside you find handwritten notes.",
+    "rusty_key": "You find a rusty key in one of the coat's pockets. It feels cold and rough in your hand.",
+    "letter": "You find a letter hidden away. You grab it. The paper crackles.",
+    "knife": "You take the small kitchen knife. It makes you feel safe.",
+    "holy_water": "The padlock snaps loose with a shriek, revealing a small vial.\nA vial of cloudy liquid hums faintly in your hands. A worn out label sticks to the front: \"Holy Water\"",
+    "ritual_notes": "The trunk lid gives way and inside you find handwritten notes.\nThey seem to be instructions for a ritual.",
     "read_letter": "You read the letter. The handwriting is hurried and mentions a 'binding' in the basement.",
-    "read_book": "The book's margins are full of frantic annotations and a map of the house.",
-    "picked_knife": "The knife is small but serviceable; it's better than empty hands.",
+    "read_book": "The book's margins are full of frantic annotations and strange symbols.",
 }
 
-
 def make_narration_for_choice(choice, inventory, flags):
-    """
-    Build a short narration string for the chosen action.
-    Priority: check effectsInv keys -> effectsFlag -> fallback to simple echo of the choice text.
-    """
     lines = []
 
-    # check direct inventory effects
-    for key in choice.effectsInv.keys():
-        if key in NARRATION_MAP:
+    for key, qty in choice.effectsInv.items():
+        if qty > 0 and key in NARRATION_MAP:
             lines.append(NARRATION_MAP[key])
 
-    # check effect flags
     for key in choice.effectsFlag.keys():
         if key in NARRATION_MAP:
             lines.append(NARRATION_MAP[key])
 
-    # provide some context-specific narration for reading the letter or book
-    if choice.effectsFlag.get("read_letter"):
-        lines.append(NARRATION_MAP.get("read_letter"))
-    if choice.effectsFlag.get("read_book"):
-        lines.append(NARRATION_MAP.get("read_book"))
-
     if not lines:
-        # fallback: a small echo
-        lines.append(f"You: {choice.text}")
+        lines.append(f"You {choice.text}")
 
     return "\n".join(lines)
 
-
-def dynamic_room_description(node: Node, flags: dict, inventory: Inventory) -> str:
-    """
-    Return the node.description plus dynamic lines depending on flags/inventory.
-    """
-    desc = node.description + "\n"
-
-    # example: foyer reacts to rusty key
-    if node.id == 1:
-        if flags.get("grabbed_rusty_key"):
-            desc += "\nThe coat rack is empty now — the rusty key is gone."
-        else:
-            desc += "\nThe coat rack looks like it might hide something useful."
-
-        if inventory.equipment.get("letter", 0) and not flags.get("read_letter"):
-            desc += "\nYou have an unread letter in your pocket. You can read it."
-
-    # kitchen reflects whether the cabinet was opened
-    if node.id == 3:
-        if flags.get("opened_cabinet"):
-            desc += "\nYou already opened the cabinet — the vial is gone or in your inventory."
-        else:
-            desc += "\nThe cabinet is still locked with a padlock."
-
-    # attic if trunk opened
-    if node.id == 5:
-        if flags.get("opened_trunk"):
-            desc += "\nThe open trunk reveals torn cloth and a stack of pages."
-        else:
-            desc += "\nThe trunk's brittle tape waits to be cut."
-
-    # basement hint if ritual notes have been found
-    if node.id == 6 and inventory.equipment.get("ritual_notes", 0):
-        desc += "\nYour mind remembers a phrase from the ritual notes — it might help later."
-
-    return desc
-
-
 def main():
-    # build game data
     nodes = build_story()
     current_node = 1
-    inventory = Inventory({})  # your Inventory class instance
-    flags = {
-        # default flags are False
-    }
+    inventory = Inventory({})
+    flags = {}
     audio = AudioManager()
     running = True
-
-    # Ambient/effect maps (edit paths to match your sounds if you have them)
     ambient_map = {
         1: "sounds/creak_loop.wav",
         2: "sounds/room_hum_loop.wav",
         6: "sounds/basement_drip_loop.wav",
         7: "sounds/hum_build_loop.wav",
     }
-
-    # print a small help on first run
     clear_screen()
-    print("Haunted House — simple text game\nType the number of a choice and press Enter.")
-    print("Hint: some choices are one-time and won't appear again once taken.\n")
-
+    print("Possesion\nBy: Jose M. Lopez & Juan S. Garizao\nType the number of a choice and press Enter.")
     while running:
-        # ensure nodes is a dict (quick runtime sanity)
         if not isinstance(nodes, dict):
             raise RuntimeError("nodes must be a dict mapping id->Node. build_story() returned something else.")
-
         node = nodes[current_node]
-
-        # Print dynamic description that reflects flags & inventory
-        print(f"\n=== {node.title} ===")
-        print(dynamic_room_description(node, flags, inventory))
-
-        # Play ambient if available
+        print(f"\n=== {node.title} ===\n")
+        print(node.description + "\n")
         if node.id in ambient_map:
             try:
                 audio.play_ambient(ambient_map[node.id])
             except Exception:
-                # audio is optional — don't crash if it fails
                 pass
-
-        # For node 8, compute the ending outcome using inventory markers (used_*)
         if node.id == 8:
-            used_exorcism = inventory.equipment.get("used_exorcism", 0)
-            used_ritual = inventory.equipment.get("used_ritual", 0)
-            used_violence = inventory.equipment.get("used_violence", 0)
-            used_none = inventory.equipment.get("used_none", 0)
-
+            used_exorcism = flags.get("used_exorcism", False)
+            used_ritual = flags.get("used_ritual", False)
+            used_violence = flags.get("used_violence", False)
+            used_none = flags.get("used_none", False)
             if used_exorcism:
-                print("\nYou move carefully, whispering words as you sprinkle the holy water. "
-                      "The room screams, light floods, and slowly the features in front of you soften. "
-                      "The person collapses — alive, but freed. You survived; you saved them.")
+                print("\nYou move carefully, whispering words as you sprinkle the holy water.\nThe room shakes, light floods, and the horrid face in front of you softens.\nThe person collapses — alive, and freed. You survived, and you saved them.")
             elif used_ritual:
-                print("\nFollowing the notes precisely, you trace the sigils and speak the binding phrases. "
-                      "The air convulses. For a terrible second you see something immense, then the voice is gone. "
-                      "The person slumps — alive, the possession broken but the cost evident.")
+                print("\nFollowing the notes precisely, you trace the sigils and speak the binding phrases. The air convulses.\nFor a terrible second you see a giant shadow emerge from below the person.\nThe mumbling stops. The person slumps, alive but in rough shape. the possession broken but the cost evident.")
             elif used_violence:
-                print("\nYou lunge with the knife. For a moment it seems to work — the creature recoils — "
-                      "but the wound burns your hands and the air turns cold. You manage to subdue the thing, "
-                      "but the moral consequences linger. The body may recover; you are not sure.")
+                print("\nYou lunge with the knife. For a moment it seems to work — the creature recoils — but the blood from its wound burns you as it lands on your body.\n With a terrible shriek, it falls to the ground. Its breathing slows to a halt. You were able to subdue the creature, but killed the person it was before.")
             else:
-                print("\nYou rush in empty-handed. There is no time to think. The thing is faster. "
-                      "It overwhelms you. Everything goes black.")
+                print("\nYou rush in empty-handed. There is no time to think. The thing is faster. It overwhelms you. Everything goes black.")
             running = False
             break
-
-        # List available choices (Choice.is_available should use inv & flags)
         available_choices = [c for c in node.choices if c.is_available(inventory, flags)]
         for idx, choice in enumerate(available_choices, start=1):
             print(f"{idx}. {choice.text}")
-
-        # show inventory briefly
         if getattr(inventory, "equipment", None):
             inv_list = [f"{k} x{v}" for k, v in inventory.equipment.items() if v]
             if inv_list:
                 print("Inventory:", ", ".join(inv_list))
-
-        # get input
         try:
             selection = int(input("\nChoose an option: ")) - 1
             if selection < 0 or selection >= len(available_choices):
                 raise IndexError()
             choice = available_choices[selection]
         except (ValueError, IndexError):
-            print("⚠️ Invalid option")
+            print("Invalid option")
             continue
-
-        # Play the choice's short effect sound (if any) BEFORE applying effects so the player hears the action
         if getattr(choice, "sound", None):
             try:
                 audio.play_effect(choice.sound)
             except Exception:
                 pass
-
-        # Apply effects (add/remove items, mark items used, etc.)
         choice.apply_effects(inventory, flags)
-
-        # Build and show narration for the action
         narration = make_narration_for_choice(choice, inventory, flags)
         print("\n" + narration)
-
-        # Let the player see the narration before clearing the screen
         input("\n(Press Enter to continue...)")
-
-        # Clear screen when a choice is made (as requested)
         clear_screen()
-
-        # tiny additional feedback sounds based on effect keys (optional)
         try:
-            if choice.effectsInv.get("used_exorcism"):
+            if choice.effectsFlag.get("used_exorcism"):
                 audio.play_effect("sounds/holy_scream.wav")
         except Exception:
             pass
-
-        # navigate to next node or end
         if choice.target is None:
-            # print a short farewell/ending note
             print("The story ends here. Thanks for playing.")
             running = False
         else:
             current_node = choice.target
-
-    # tidy up audio
     try:
         audio.close()
     except Exception:
         pass
-
 
 if __name__ == "__main__":
     main()
