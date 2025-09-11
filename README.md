@@ -1,5 +1,6 @@
 # Possession — Interactive Systems Project  
-**By:** Jose Miguel Lopez & Juan Sebastian Garizao  
+**By:** Jose Miguel Lopez & Juan Sebastian Garizao 
+**Video:** https://youtu.be/sC7bIKUfa1Y 
 
 ## Project Description  
 This project is a text-based adventure game inspired by Zork-like interactive fiction, created as part of the Interactive Systems course. The main objective was to design a branching narrative with immersive audio feedback using OpenAL.  
