@@ -27,14 +27,14 @@ class AudioManager:
         if snd is None:
             snd = self.load(filename)
         return snd
-    def play_effect(self, filename: str, position: tuple[float, float, float] = (0, 0, 0)):
-        """Play a one-shot sound effect at an optional 3D position."""
+    def play_effect(self, filename: str, position: tuple[float, float, float] = (0, 0, 0), gain: float = 4.0):
         snd = self._get_sound(filename)
         snd.set_looping(False)
         snd.set_position(position)
+        snd.set_gain(gain)   
         snd.play()
 
-    def play_ambient(self, filename: str, position: tuple[float, float, float] = (0, 0, 0)): 
+    def play_ambient(self, filename: str, position: tuple[float, float, float] = (0, 0, 0), gain: float = 3.0):
         """
         Play a looping ambient sound at an optional 3D position.
         Stops the previous ambient track if one is active.
@@ -52,13 +52,12 @@ class AudioManager:
         """
         if self._ambient is not None:
             self._ambient.stop()
-
         snd = self._get_sound(filename)
         snd.set_looping(True)
         snd.set_position(position)
+        snd.set_gain(gain)   
         snd.play()
         self._ambient = snd
-
     def stop_ambient(self):
         """Stop the current ambient sound if active."""
         if self._ambient is not None:
