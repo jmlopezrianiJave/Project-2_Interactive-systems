@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / compiled files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# Environments
+.env
+venv/
+env/
+pip-wheel-metadata/
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.DS_Store # macOS specific
+
+# OS generated files
+.ipynb_checkpoints/ # Jupyter notebooks
+Thumbs.db # Windows specific
+
+# Logs and databases
+*.log
+*.sqlite3
+db.sqlite3
+
+# Test and build artifacts
+dist/
+build/
+*.egg
+*.whl
+
+# Specific to PyInstaller
+*.spec
