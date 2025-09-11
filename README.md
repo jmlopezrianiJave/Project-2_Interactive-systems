@@ -33,28 +33,36 @@ The system integrates:
   - Use knife → violent resolution (bad ending).  
   - Enter unprepared → possession (worst ending).  
 
-## Audio Design  
-The audio layer was central to this project.  
+### Ambient Loops  
+- Foyer → `foyer.wav`  
+- Living Room → `livingRoomLoop.wav`  
+- Kitchen → `kitchen.wav`  
+- Stair Landing → `stair_creak_loop.wav`  
+- Attic → `attic_wind_loop.wav`  
+- Basement Corridor → `basement_drip_loop.wav`  
+- Threshold → `chains.wav`  
+- Confrontation → `demonic_whisper_loop.wav`  
 
-- Ambient loops:  
-  - Foyer → `creak_loop.wav`  
-  - Living Room → `room_hum_loop.wav`  
-  - Kitchen → `fridge_hum_loop.wav`  
-  - Attic → `attic_wind_loop.wav`  
-  - Basement → `basement_drip_loop.wav`  
-  - Threshold → `hum_build_loop.wav`  
-  - Confrontation → `demonic_whisper_loop.wav`  
+### Effect Sounds  
+- Key pickup → `key_pickup.wav`  
+- Letter found → `letter.wav`  
+- Reading letter/book → `page_rustle.wav`, `page_rustle2.wav`  
+- Stairs movement → `stairs.wav`  
+- Knife pickup → `knife_pickup.wav`  
+- Unlock cabinet → `lock_open.wav`  
+- Search shelves/drawers → `shelf_clatter.wav`  
+- Open trunk with knife → `tape_cut.wav`  
+- Force trunk → `wood_snap.wav`  
+- Basement approach (voices) → `mumbles.wav`  
+- Exorcism (holy water) → `holy_splash.wav`  
+- Ritual chant → `ritualChant.wav`  
+- Knife fight → `knife_swipe.wav`  
+- Burst in unprepared → `fightScream.wav`  
+- Final confrontation → `fightScream.wav` or `scream.wav`  
 
-- Effect sounds:  
-  - Key pickup → `key_pickup.wav`  
-  - Letter rustle → `paper_rustle.wav`  
-  - Book pages → `page_rustle.wav`  
-  - Knife pickup → `knife_pickup.wav`  
-  - Cabinet unlock → `lock_open.wav`  
-  - Drawer rummage → `drawer_rummage.wav`  
-  - Trunk tape cut → `tape_cut.wav`  
-  - Ritual chant → `chant.wav`  
-  - Holy water splash → `holy_splash.wav`  
-  - Door bang → `door_bang.wav`  
-  - Demon scream → `scream.wav`  
+### Ending Effects  
+- Exorcism success → `goodEnding.wav` + `holy_scream.wav`  
+- Ritual success → `ritualChant.wav`  
+- Violence → `badEnding.wav` + `demon_roar.wav`  
+- Unprepared → `badEnding.wav`  
 
