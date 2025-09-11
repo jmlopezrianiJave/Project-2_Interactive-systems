@@ -30,7 +30,7 @@ def build_story():
                 requiresFlag={"grabbed_rusty_key": False},
                 effectsInv={"rusty_key": 1},
                 effectsFlag={"grabbed_rusty_key": True},
-                sound="sounds/key_pickup.wav",
+                sound="src/sounds/key_pickup.wav",
             ),
             Choice(
                 "Check the umbrella stand",
@@ -38,7 +38,7 @@ def build_story():
                 requiresFlag={"has_letter": False},
                 effectsInv={"letter": 1},
                 effectsFlag={"has_letter": True},
-                sound="sounds/paper_rustle.wav",
+                sound="src/sounds/letter.wav",
             ),
             Choice(
                 "Read the old letter",
@@ -46,7 +46,7 @@ def build_story():
                 requiresInv={"letter": 1},
                 requiresFlag={"read_letter": False},
                 effectsFlag={"read_letter": True},
-                sound="sounds/page_rustle.wav",
+                sound="src/sounds/page_rustle.wav",
             ),
             Choice("Leave the house", target=None),
         ],
@@ -66,10 +66,10 @@ def build_story():
                 requiresFlag={"read_book": False},
                 effectsInv={"journal": 1},
                 effectsFlag={"read_book": True},
-                sound="sounds/page_rustle.wav",
+                sound="src/sounds/page_rustle.wav",
             ),
             Choice("Follow the hallway to the kitchen", target=3),
-            Choice("Go up the staircase", target=4),
+            Choice("Go up the staircase", target=4, sound="src/sounds/stairs.wav"),
             Choice("Return to the foyer", target=1),
         ],
     )
@@ -88,7 +88,7 @@ def build_story():
                 requiresFlag={"picked_knife": False},
                 effectsInv={"knife": 1},
                 effectsFlag={"picked_knife": True},
-                sound="sounds/knife_pickup.wav",
+                sound="src/sounds/knife_pickup.wav",
             ),
             Choice(
                 "Try to open the locked cabinet (use rusty key)",
@@ -97,9 +97,9 @@ def build_story():
                 requiresFlag={"opened_cabinet": False},
                 effectsInv={"holy_water": 1, "rusty_key": -1},
                 effectsFlag={"opened_cabinet": True},
-                sound="sounds/lock_open.wav",
+                sound="src/sounds/lock_open.wav",
             ),
-            Choice("Look into the sink and drawers (nothing special)", target=3, sound="sounds/drawer_rummage.wav"),
+            Choice("Look into the sink and drawers (nothing special)", target=3, sound="src/sounds/drawer_rummage.wav"),
             Choice("Return to the living room", target=2),
         ],
     )
@@ -112,9 +112,9 @@ def build_story():
             "and a steep ladder leading to a cramped attic hatch."
         ),
         choices=[
-            Choice("Climb up into the attic", target=5),
-            Choice("Descend to the basement", target=6),
-            Choice("Go back to the living room", target=2),
+            Choice("Climb up into the attic", target=5, sound="src/sounds/stairs.wav"),
+            Choice("Descend to the basement", target=6, sound="src/sounds/stairs.wav"),
+            Choice("Go back to the living room", target=2, sound="src/sounds/stairs.wav"),
         ],
     )
 
@@ -133,7 +133,7 @@ def build_story():
                 requiresFlag={"opened_trunk": False},
                 effectsInv={"ritual_notes": 1},
                 effectsFlag={"opened_trunk": True},
-                sound="sounds/tape_cut.wav",
+                sound="src/sounds/tape_cut.wav",
             ),
             Choice(
                 "Force the trunk open with your hands",
@@ -141,9 +141,9 @@ def build_story():
                 requiresFlag={"opened_trunk": False},
                 effectsInv={"ritual_notes": 1},
                 effectsFlag={"opened_trunk": True},
-                sound="sounds/wood_snap.wav",
+                sound="src/sounds/wood_snap.wav",
             ),
-            Choice("Return to the stair landing", target=4),
+            Choice("Return to the stair landing", target=4, sound="src/sounds/stairs.wav"),
         ],
     )
 
@@ -155,16 +155,16 @@ def build_story():
             "A heavy door at the end stands slightly open, a foul smell leaking from it."
         ),
         choices=[
-            Choice("Approach the heavy door", target=7),
+            Choice("Approach the heavy door", target=7, sound="src/sounds/mumbles.wav"),
             Choice(
                 "Search the storage shelves",
                 target=6,
                 requiresFlag={"searched_shelves": False},
                 effectsInv={"moldy_rag": 1},
                 effectsFlag={"searched_shelves": True},
-                sound="sounds/shelf_clatter.wav",
+                sound="src/sounds/shelf_clatter.wav",
             ),
-            Choice("Go back upstairs", target=4),
+            Choice("Go back upstairs", target=4, sound="src/sounds/stairs.wav"),
         ],
     )
 
@@ -183,7 +183,7 @@ def build_story():
                 requiresInv={"holy_water": 1},
                 effectsInv={"holy_water": -1},
                 effectsFlag={"used_exorcism": True},
-                sound="sounds/holy_splash.wav",
+                sound="src/sounds/whisper.wav",
             ),
             Choice(
                 "Use the ritual notes you found to try to bind the thing",
@@ -191,20 +191,19 @@ def build_story():
                 requiresInv={"ritual_notes": 1},
                 effectsInv={"ritual_notes": -1},
                 effectsFlag={"used_ritual": True},
-                sound="sounds/chant.wav",
             ),
             Choice(
                 "Rush in with the knife and try to fight",
                 target=8,
                 requiresInv={"knife": 1},
                 effectsFlag={"used_violence": True},
-                sound="sounds/knife_swipe.wav",
+                sound="src/sounds/knife_swipe.wav",
             ),
             Choice(
                 "Burst in unprepared",
                 target=8,
                 effectsFlag={"used_none": True},
-                sound="sounds/door_bang.wav",
+                sound="src/sounds/fightScream.wav",
             ),
             Choice("Step back quietly and rethink your approach", target=6),
         ],
@@ -221,7 +220,7 @@ def build_story():
             Choice(
                 "Proceed with encounter", 
                 target=None,
-                sound="sounds/scream.wav")
+                sound="src/sounds/scream.wav")
         ],
     )
 
@@ -261,10 +260,11 @@ def main():
     audio = AudioManager()
     running = True
     ambient_map = {
-        1: "sounds/creak_loop.wav",
-        2: "sounds/room_hum_loop.wav",
-        6: "sounds/basement_drip_loop.wav",
-        7: "sounds/hum_build_loop.wav",
+        1: "src/sounds/foyer.wav",
+        2: "src/sounds/livingRoomLoop.wav",
+        3: "src/sounds/kitchen.wav",
+        6: "src/sounds/basement_drip_loop.wav",
+        7: "src/sounds/chains.wav",
     }
     clear_screen()
     print("Possesion\nBy: Jose M. Lopez & Juan S. Garizao\nType the number of a choice and press Enter.")
@@ -285,12 +285,16 @@ def main():
             used_violence = flags.get("used_violence", False)
             used_none = flags.get("used_none", False)
             if used_exorcism:
+                audio.play_effect("src/sounds/goodEnding.wav")
                 print("\nYou move carefully, whispering words as you sprinkle the holy water.\nThe room shakes, light floods, and the horrid face in front of you softens.\nThe person collapses — alive, and freed. You survived, and you saved them.")
             elif used_ritual:
+                audio.play_effect("src/sounds/ritualChant.wav")
                 print("\nFollowing the notes precisely, you trace the sigils and speak the binding phrases. The air convulses.\nFor a terrible second you see a giant shadow emerge from below the person.\nThe mumbling stops. The person slumps, alive but in rough shape. the possession broken but the cost evident.")
             elif used_violence:
+                audio.play_effect("src/sounds/badEnding.wav")
                 print("\nYou lunge with the knife. For a moment it seems to work — the creature recoils — but the blood from its wound burns you as it lands on your body.\n With a terrible shriek, it falls to the ground. Its breathing slows to a halt. You were able to subdue the creature, but killed the person it was before.")
             else:
+                audio.play_effect("src/sounds/badEnding.wav")
                 print("\nYou rush in empty-handed. There is no time to think. The thing is faster. It overwhelms you. Everything goes black.")
             running = False
             break
@@ -321,7 +325,7 @@ def main():
         clear_screen()
         try:
             if choice.effectsFlag.get("used_exorcism"):
-                audio.play_effect("sounds/holy_scream.wav")
+                audio.play_effect("src/sounds/holy_scream.wav")
         except Exception:
             pass
         if choice.target is None:
