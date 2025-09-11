@@ -21,6 +21,40 @@ The system integrates:
   - `Choice` → defines decisions, requirements, and effects.  
   - `Node` → represents story scenes.  
   - `AudioManager` → handles ambient loops and sound effects.  
+Instructions to run this project locally.
+
+## Setup
+
+### 1. Create & activate a virtual environment
+
+**On macOS / Linux**
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+**On Windows (Command Prompt)**
+```cmd
+python -m venv venv
+venv\Scripts\activate
+```
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the project
+
+```bash
+python src/main.py
+```
+
+## Deactivate virtual environment
+When you're done:
+```bash
+venv\Scripts\deactivate
+```
 
 ## Gameplay  
 - Start in the foyer of the haunted house.  
@@ -65,4 +99,3 @@ The system integrates:
 - Ritual success → `ritualChant.wav`  
 - Violence → `badEnding.wav` + `demon_roar.wav`  
 - Unprepared → `badEnding.wav`  
-
