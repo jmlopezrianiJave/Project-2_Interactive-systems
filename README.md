@@ -20,7 +20,7 @@ Spatial and ambient audio: every room has its own looping atmosphere, and action
 
 Multiple endings depending on preparation and items collected.
 
-⚙️ Technologies Used
+Technologies Used
 
 Python 3.10+
 
@@ -36,7 +36,7 @@ Node → represents story scenes.
 
 AudioManager → handles ambient loops and sound effects.
 
-📖 Gameplay
+Gameplay
 
 Start in the foyer of the haunted house.
 
@@ -56,7 +56,7 @@ Use knife → violent resolution (bad ending).
 
 Enter unprepared → possession (worst ending).
 
-🔊 Audio Design
+Audio Design
 
 The audio layer was central to this project.
 
@@ -99,3 +99,4 @@ Holy water splash → holy_splash.wav
 Door bang → door_bang.wav
 
 Demon scream → scream.wav
+
