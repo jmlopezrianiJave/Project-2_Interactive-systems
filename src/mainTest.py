@@ -4,6 +4,7 @@ from audioManager import AudioManager
 from inventory import Inventory
 from choice import Choice
 from node import Node
+import time
 
 def clear_screen():
     if sys.platform.startswith("win"):
@@ -287,15 +288,19 @@ def main():
             if used_exorcism:
                 audio.play_effect("src/sounds/goodEnding.wav")
                 print("\nYou move carefully, whispering words as you sprinkle the holy water.\nThe room shakes, light floods, and the horrid face in front of you softens.\nThe person collapses — alive, and freed. You survived, and you saved them.")
+                time.sleep(15.0)
             elif used_ritual:
                 audio.play_effect("src/sounds/ritualChant.wav")
                 print("\nFollowing the notes precisely, you trace the sigils and speak the binding phrases. The air convulses.\nFor a terrible second you see a giant shadow emerge from below the person.\nThe mumbling stops. The person slumps, alive but in rough shape. the possession broken but the cost evident.")
+                time.sleep(15.0)
             elif used_violence:
                 audio.play_effect("src/sounds/badEnding.wav")
                 print("\nYou lunge with the knife. For a moment it seems to work — the creature recoils — but the blood from its wound burns you as it lands on your body.\n With a terrible shriek, it falls to the ground. Its breathing slows to a halt. You were able to subdue the creature, but killed the person it was before.")
+                time.sleep(15.0)
             else:
                 audio.play_effect("src/sounds/badEnding.wav")
                 print("\nYou rush in empty-handed. There is no time to think. The thing is faster. It overwhelms you. Everything goes black.")
+                time.sleep(15.0)
             running = False
             break
         available_choices = [c for c in node.choices if c.is_available(inventory, flags)]
