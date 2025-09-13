@@ -8,7 +8,8 @@ class Choice:
                  requiresFlag: dict[str, bool] = None,
                  effectsInv: dict[str, int] = None,
                  effectsFlag: dict[str, bool] = None,
-                 sound: str | None = None):
+                 sound: str | None = None,
+                 sound_pos: str | tuple[float, float, float] | None = None):
         self.text = text
         self.target = target
         self.requiresInv = requiresInv or {}
@@ -16,6 +17,7 @@ class Choice:
         self.effectsInv = effectsInv or {}
         self.effectsFlag = effectsFlag or {}
         self.sound = sound
+        self.sound_pos = sound_pos or "center"
 
     def is_available(self,inv:Inventory, flags:dict[str,bool]) -> bool:
         for name, qty in self.requiresInv.items():
@@ -41,6 +43,5 @@ class Choice:
                     inv.increase(item, qty)
                 else:
                     inv.add(item, qty)
-        
         for f, toggle in self.effectsFlag.items():
             flags[f] = bool(toggle)
