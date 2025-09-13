@@ -32,6 +32,7 @@ def build_story():
                 effectsInv={"rusty_key": 1},
                 effectsFlag={"grabbed_rusty_key": True},
                 sound="src/sounds/key_pickup.wav",
+                sound_pos="right",
             ),
             Choice(
                 "Check the umbrella stand",
@@ -40,6 +41,7 @@ def build_story():
                 effectsInv={"letter": 1},
                 effectsFlag={"has_letter": True},
                 sound="src/sounds/letter.wav",
+                sound_pos="left",
             ),
             Choice(
                 "Read the old letter",
@@ -48,6 +50,7 @@ def build_story():
                 requiresFlag={"read_letter": False},
                 effectsFlag={"read_letter": True},
                 sound="src/sounds/page_rustle.wav",
+                sound_pos="center",
             ),
             Choice("Leave the house", target=None),
         ],
@@ -68,9 +71,10 @@ def build_story():
                 effectsInv={"journal": 1},
                 effectsFlag={"read_book": True},
                 sound="src/sounds/page_rustle.wav",
+                sound_pos="center",
             ),
             Choice("Follow the hallway to the kitchen", target=3),
-            Choice("Go up the staircase", target=4, sound="src/sounds/stairs.wav"),
+            Choice("Go up the staircase", target=4, sound="src/sounds/stairs.wav", sound_pos="above"),
             Choice("Return to the foyer", target=1),
         ],
     )
@@ -90,6 +94,7 @@ def build_story():
                 effectsInv={"knife": 1},
                 effectsFlag={"picked_knife": True},
                 sound="src/sounds/knife_pickup.wav",
+                sound_pos="right",
             ),
             Choice(
                 "Try to open the locked cabinet (use rusty key)",
@@ -99,8 +104,9 @@ def build_story():
                 effectsInv={"holy_water": 1, "rusty_key": -1},
                 effectsFlag={"opened_cabinet": True},
                 sound="src/sounds/lock_open.wav",
+                sound_pos="front",
             ),
-            Choice("Look into the sink and drawers (nothing special)", target=3, sound="src/sounds/drawer_rummage.wav"),
+            Choice("Look into the sink and drawers (nothing special)", target=3, sound="src/sounds/drawer_rummage.wav", sound_pos="left"),
             Choice("Return to the living room", target=2),
         ],
     )
@@ -113,9 +119,9 @@ def build_story():
             "and a steep ladder leading to a cramped attic hatch."
         ),
         choices=[
-            Choice("Climb up into the attic", target=5, sound="src/sounds/stairs.wav"),
-            Choice("Descend to the basement", target=6, sound="src/sounds/stairs.wav"),
-            Choice("Go back to the living room", target=2, sound="src/sounds/stairs.wav"),
+            Choice("Climb up into the attic", target=5, sound="src/sounds/stairs.wav", sound_pos="above"),
+            Choice("Descend to the basement", target=6, sound="src/sounds/stairs.wav", sound_pos="above"),
+            Choice("Go back to the living room", target=2, sound="src/sounds/stairs.wav", sound_pos="above"),
         ],
     )
 
@@ -135,6 +141,7 @@ def build_story():
                 effectsInv={"ritual_notes": 1},
                 effectsFlag={"opened_trunk": True},
                 sound="src/sounds/tape_cut.wav",
+                sound_pos="right",
             ),
             Choice(
                 "Force the trunk open with your hands",
@@ -143,8 +150,9 @@ def build_story():
                 effectsInv={"ritual_notes": 1},
                 effectsFlag={"opened_trunk": True},
                 sound="src/sounds/wood_snap.wav",
+                sound_pos="left",
             ),
-            Choice("Return to the stair landing", target=4, sound="src/sounds/stairs.wav"),
+            Choice("Return to the stair landing", target=4, sound="src/sounds/stairs.wav", sound_pos="above"),
         ],
     )
 
@@ -156,7 +164,7 @@ def build_story():
             "A heavy door at the end stands slightly open, a foul smell leaking from it."
         ),
         choices=[
-            Choice("Approach the heavy door", target=7, sound="src/sounds/mumbles.wav"),
+            Choice("Approach the heavy door", target=7, sound="src/sounds/mumbles.wav", sound_pos="far_front"),
             Choice(
                 "Search the storage shelves",
                 target=6,
@@ -164,8 +172,9 @@ def build_story():
                 effectsInv={"moldy_rag": 1},
                 effectsFlag={"searched_shelves": True},
                 sound="src/sounds/shelf_clatter.wav",
+                sound_pos="right",
             ),
-            Choice("Go back upstairs", target=4, sound="src/sounds/stairs.wav"),
+            Choice("Go back upstairs", target=4, sound="src/sounds/stairs.wav", sound_pos="above"),
         ],
     )
 
@@ -185,6 +194,7 @@ def build_story():
                 effectsInv={"holy_water": -1},
                 effectsFlag={"used_exorcism": True},
                 sound="src/sounds/whisper.wav",
+                sound_pos="front",
             ),
             Choice(
                 "Use the ritual notes you found to try to bind the thing",
@@ -199,12 +209,14 @@ def build_story():
                 requiresInv={"knife": 1},
                 effectsFlag={"used_violence": True},
                 sound="src/sounds/knife_swipe.wav",
+                sound_pos="front",
             ),
             Choice(
                 "Burst in unprepared",
                 target=8,
                 effectsFlag={"used_none": True},
                 sound="src/sounds/fightScream.wav",
+                sound_pos="front",
             ),
             Choice("Step back quietly and rethink your approach", target=6),
         ],
@@ -221,7 +233,8 @@ def build_story():
             Choice(
                 "Proceed with encounter", 
                 target=None,
-                sound="src/sounds/scream.wav")
+                sound="src/sounds/scream.wav",
+                sound_pos="front")
         ],
     )
 
@@ -267,12 +280,29 @@ def main():
         6: "src/sounds/basement_drip_loop.wav",
         7: "src/sounds/chains.wav",
     }
+    effects_map = {
+        1: ("src/sounds/thunder.wav", "behind"),
+        2: ("src/sounds/creak.wav", "left"),
+        4: ("src/sounds/steps.wav", "behind"),
+        5: ("src/sounds/knock.wav", "below"),
+        6: ("src/sounds/bulb.wav", "far_front"),
+        7: ("src/sounds/drag.wav", "right")
+    }
     clear_screen()
     print("Possesion\nBy: Jose M. Lopez & Juan S. Garizao\nType the number of a choice and press Enter.")
     while running:
         if not isinstance(nodes, dict):
             raise RuntimeError("nodes must be a dict mapping id->Node. build_story() returned something else.")
         node = nodes[current_node]
+
+        try:
+            snd_info = effects_map.get(node.id)
+            if snd_info:
+                snd_path, snd_pos = snd_info
+                audio.play_effect(snd_path, snd_pos)
+        except Exception:
+            pass
+
         print(f"\n=== {node.title} ===\n")
         print(node.description + "\n")
         if node.id in ambient_map:
@@ -320,7 +350,7 @@ def main():
             continue
         if getattr(choice, "sound", None):
             try:
-                audio.play_effect(choice.sound)
+                audio.play_effect(choice.sound, choice.sound_pos)
             except Exception:
                 pass
         choice.apply_effects(inventory, flags)

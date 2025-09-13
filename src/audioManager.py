@@ -33,26 +33,26 @@ class AudioManager:
         key = str(path)
         if key in self._sounds:
             return self._sounds[key]
-        src = oalOpen(key)
-        self._sounds[key] = src
-        return src
+        source = oalOpen(key)
+        self._sounds[key] = source
+        return source
 
     def play_effect(self, filename: str, position=None):
         try:
-            src = self.load(filename)
+            source = self.load(filename)
             pos = resolve_position(position)
             try:
-                src.set_position(pos)
+                source.set_position(pos)
             except Exception:
                 try:
-                    src.position = pos
+                    source.position = pos
                 except Exception:
                     pass
             try:
-                src.play()
+                source.play()
             except Exception:
                 try:
-                    src.resume()
+                    source.resume()
                 except Exception:
                     pass
         except Exception:
@@ -65,33 +65,33 @@ class AudioManager:
                     self._ambient.stop()
                 except Exception:
                     pass
-            src = self.load(filename)
+            source = self.load(filename)
             pos = resolve_position(position)
             try:
-                src.set_position(pos)
+                source.set_position(pos)
             except Exception:
                 try:
-                    src.position = pos
+                    source.position = pos
                 except Exception:
                     pass
             try:
-                src.set_looping(True)
+                source.set_looping(True)
             except Exception:
                 try:
-                    src.set_loop(True)
+                    source.set_loop(True)
                 except Exception:
                     try:
-                        src.looping = True
+                        source.looping = True
                     except Exception:
                         pass
             try:
-                src.play()
+                source.play()
             except Exception:
                 try:
-                    src.resume()
+                    source.resume()
                 except Exception:
                     pass
-            self._ambient = src
+            self._ambient = source
         except Exception:
             pass
 
