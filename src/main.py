@@ -22,6 +22,7 @@ def build_story():
             "You stand in the dim foyer of an old house. The air is cold.\n"
             "A coat rack hangs by the door, an umbrella stand leans in the corner.\n"
             "From somewhere deeper in the house you can hear a low humming."
+            " From behind you there is sometimes a low, rolling rumble — like distant thunder."
         ),
         choices=[
             Choice("Step into the living room", target=2),
@@ -62,6 +63,7 @@ def build_story():
         description=(
             "A sagging sofa faces a shuttered window. Bookshelves line one wall — "
             "one book looks worn, as if it were read often. The wood creaks around you."
+            " A faint creaking seems to come from the left side of the room, near the shelves."
         ),
         choices=[
             Choice(
@@ -117,6 +119,7 @@ def build_story():
         description=(
             "The staircase creaks. The hallway splits: a narrow door down to the basement, "
             "and a steep ladder leading to a cramped attic hatch."
+            " You sometimes feel and hear movement behind you on the stairs, like distant footsteps."
         ),
         choices=[
             Choice("Climb up into the attic", target=5, sound="src/sounds/stairs.wav", sound_pos="above"),
@@ -131,6 +134,7 @@ def build_story():
         description=(
             "Dust motes float in the slanting beams of light. A trunk sits in the corner, "
             "its lid sealed with brittle tape."
+            " Occasionally you hear faint knocks coming from below, as if something shifts under the floor."
         ),
         choices=[
             Choice(
@@ -162,6 +166,7 @@ def build_story():
         description=(
             "Damp concrete and a single bare bulb that lights a path of blood droplets on the floor. The blood is still fresh. The humming is louder here. "
             "A heavy door at the end stands slightly open, a foul smell leaking from it."
+            " Far ahead you can see a flickering bulb and hear the thin hum of electricity coming from the corridor ahead."
         ),
         choices=[
             Choice("Approach the heavy door", target=7, sound="src/sounds/mumbles.wav", sound_pos="far_front"),
@@ -185,6 +190,7 @@ def build_story():
             "The door opens into a small, sparsely furnished room. Chains hang on one wall, "
             "and on a low table are strange symbols that look like a rushed ritual. "
             "You see a figure facing the back wall, gently rocking back and forth while it mumbles to itself."
+            " To your right the chains sometimes scrape and drag, an audible cue of movement nearby."
         ),
         choices=[
             Choice(
@@ -231,7 +237,7 @@ def build_story():
         ),
         choices=[
             Choice(
-                "Proceed with encounter", 
+                "Proceed with encounter",
                 target=None,
                 sound="src/sounds/scream.wav",
                 sound_pos="front")
